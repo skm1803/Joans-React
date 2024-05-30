@@ -1,17 +1,17 @@
 import { useState } from "react";
 import "./App.css";
-const initialItems = [
-  { id: 1, descriptions: "Passports", quantity: 2, packed: false },
-  { id: 2, descriptions: "Socks", quantity: 12, packed: true },
-];
 
 export default function App() {
-  const [items, setItems] = useState(initialItems);
+  const [items, setItems] = useState([]);
+  function handelAddItem(newItems) {
+    setItems((items)=>[...items, newItems]);
 
+    console.log(items)
+  }
   return (
     <>
       <Logo />
-      <Form  items={items} setItems={setItems}/>
+      <Form   handelAddItem={handelAddItem}/>
       <PackingList items={items} setItems={setItems}/>
       <Stats />
     </>
@@ -22,21 +22,17 @@ function Logo() {
   return <h1>🌴Far Away 💼</h1>;
 }
 
-function Form({items, setItems }) {
+function Form({handelAddItem}) {
+  
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(1);
-  
-  function handelAddItem(newItems) {
-    setItems((items)=>[...items, newItems]);
-    setDescription("");
-    setQuantity(1);
-    console.log(items)
-  }
 
   function handelSubmit(event) {
     event.preventDefault();
-    const newItems= {id: items.length + 1, description, quantity, packed: false};
+    const newItems= {id: new Date() + 1, description, quantity, packed: false};
     if(!description) return;
+    setDescription("");
+    setQuantity(1); 
     handelAddItem(newItems);
   }
   return (
@@ -57,7 +53,7 @@ function Form({items, setItems }) {
   );
 }
 
-function PackingList({items = initialItems}) {
+function PackingList({items}) {
   return (
     <ul className="list">
       {items.map((item) => (
@@ -72,7 +68,7 @@ function ListItem({ item }) {
     <li>
       <input type="checkbox" checked={item.packed} />
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
-        {item.quantity} {item.descriptions}
+        {item.quantity} {item.description}
       </span>
       <button>❌</button>
     </li>
