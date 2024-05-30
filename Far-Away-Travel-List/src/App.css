@@ -76,11 +76,10 @@ input {
 .list {
   background-color: #5a3e2b;
   color: #ffebb3;
-  padding: 4rem 2rem;
-
   display: flex;
   justify-content: space-between;
-  flex-direction: row;
+  flex-direction: column;
+  padding: 4rem 0;
   gap: 3.2rem;
   align-items: center;
 }

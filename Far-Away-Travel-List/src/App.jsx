@@ -8,11 +8,16 @@ export default function App() {
 
     console.log(items)
   }
+
+  function handelDelete(id) {
+    setItems((items) => items.filter((item) => item.id !== id));
+  }
+
   return (
     <>
       <Logo />
       <Form   handelAddItem={handelAddItem}/>
-      <PackingList items={items} setItems={setItems}/>
+      <PackingList items={items} handelDelete={handelDelete }/>
       <Stats />
     </>
   );
@@ -53,24 +58,25 @@ function Form({handelAddItem}) {
   );
 }
 
-function PackingList({items}) {
+function PackingList({items,handelDelete}) {
+  
   return (
     <ul className="list">
       {items.map((item) => (
-        <ListItem key={item.id} item={item} />
+        <ListItem key={item.id} item={item} handelDelete={handelDelete} />
       ))}
     </ul>
   );
 }
 
-function ListItem({ item }) {
+function ListItem({ item,handelDelete}) {
   return (
     <li>
       <input type="checkbox" checked={item.packed} />
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
-      <button>❌</button>
+      <button onClick={() => handelDelete(item.id)}>❌</button>
     </li>
   );
 }
