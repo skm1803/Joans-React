@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Children, useState } from 'react'
 import './App.css'
 
 const messages = [
@@ -18,11 +18,11 @@ export default function App() {
 function Steps() {
   const[count, setCount] = useState(0)
 
-  function handePrev() {
+  function handelPrev() {
     if(count<=0) return
     setCount(count - 1)
   }
-  function handeNext() {
+  function handelNext() {
     if(count>=2) return
     setCount(count + 1)
   }
@@ -37,10 +37,15 @@ function Steps() {
         Steps {count+1}:{messages[count]}
       </div>
       <div className='buttons'>
-        <button className={count>=1?'active':{}}onClick={handePrev}>Previous</button>
-        <button className={count<=1?'active':{}} onClick={handeNext}>Next</button> 
+        <Button bgColor='#7950f2' textColor='#fff'onClick={handelPrev} text='Previous'><span>👈</span>Previous</Button>
+        <Button bgColor='#7950f2' textColor='#fff'onClick={handelNext}>Next<span>👉</span></Button>
       </div>
-
     </div>
+  ) 
+}
+
+function Button({bgColor, textColor, onClick, children}) {
+  return (
+    <button style={{backgroundColor: bgColor, color: textColor}} onClick={onClick}>{children}</button>
   )
 }
