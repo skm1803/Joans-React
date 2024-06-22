@@ -12,20 +12,23 @@ const textStyle = {
     margin: "0",
 };
 export default function StarRating({ maxRating = 10 }) {
-    const [rate, setRate] = useState(1);
+    const [rate, setRate] = useState(0);
+    const [hoverRate, setHoverRate] = useState(0);
     return (
         <div style={containerStyle}>
-            <div style={starContainerStyle}  >
+            <div style={starContainerStyle}>
                 {Array.from({ length: maxRating }, (_, i) => (
                     <Star
                         key={i}
                         handelRating={() => setRate(i + 1)}
-                        full={i < rate}
+                        onMouseIn={() => setHoverRate(i + 1)}
+                        onMouseOut={() => setHoverRate(0)}
+                        full={hoverRate ? hoverRate >= i + 1 : rate >= i + 1}
                     />
                 ))}
 
             </div>
-            <p style={textStyle}>{rate}</p>
+            <p style={textStyle}>{hoverRate || rate || ""}</p>
         </div >
     )
 }
@@ -38,9 +41,9 @@ const starStyle = {
 }
 
 
-function Star({ handelRating, full }) {
+function Star({ onMouseIn, onMouseOut, full, handelRating }) {
     return (
-        <span style={starStyle} onClick={handelRating} >
+        <span style={starStyle} onClick={handelRating} onMouseEnter={onMouseIn} onMouseLeave={onMouseOut}>
             {full ? <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
@@ -68,13 +71,4 @@ function Star({ handelRating, full }) {
 
         </span>
     )
-}
-//add two numbers
-const a = 2;
-const b = 3;
-
-console.log(a + b)
-
-for (let i = 0; i < 20; i++) {
-    console.log(i)
 }
